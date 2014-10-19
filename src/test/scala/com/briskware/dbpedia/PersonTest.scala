@@ -26,7 +26,7 @@ class PersonSuite extends FunSuite {
   }
 
 
-  test("run Sparql request for Cameron") {
+  test("Run Sparql request for Cameron") {
 
     val responseF: Future[JsObject] = Question.sparqlClient.response(
       Person.sparql(uri = Some(new java.net.URI("http://dbpedia.org/resource/David_Cameron"))))
@@ -40,7 +40,7 @@ class PersonSuite extends FunSuite {
 
   }
 
-  test("run Sparql request for Blair") {
+  test("Run Sparql request for Blair") {
 
     val responseF: Future[JsObject] = Question.sparqlClient.response(
       Person.sparql(uri = Some(new java.net.URI("http://dbpedia.org/resource/Tony_Blair"))))
