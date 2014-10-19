@@ -10,6 +10,7 @@ Instructions:
 
 1) Check out the project
 % git clone https://github.com/briskware/dbpedia-sparql.git
+
 2) Build and run the tests
 % sbt test
 
