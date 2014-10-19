@@ -1,0 +1,24 @@
+PREFIX dbpedia-owl: <http://dbpedia.org/ontology/>
+SELECT ?uri, ?age, ?birthPlace WHERE {
+   ?uri 
+      rdfs:label "Tony Blair"@en;
+      rdf:type foaf:Person.
+      
+   OPTIONAL { 
+      ?uri dbpedia-owl:birthDate ?dob.
+      BIND(floor((now() - ?dob)/3600/24/364.25) as ?age)
+   }
+
+   OPTIONAL {
+      ?uri dbpedia-owl:birthPlace ?pob.
+      ?pob rdf:type dbpedia-owl:Settlement.
+      ?pob rdfs:label ?pobLbl.
+      FILTER(langMatches(lang(?pobLbl), "en")).
+      OPTIONAL {
+         ?pob dbpedia-owl:country ?country.
+         ?country rdfs:label ?countryLbl.
+         FILTER( langMatches(lang(?countryLbl), "en")).
+      }
+      BIND(IF(!bound(?countryLbl), str(?pobLbl), concat(str(?pobLbl),", ", str(?countryLbl))) as ?birthPlace)
+   }
+}
