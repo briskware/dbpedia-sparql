@@ -6,8 +6,14 @@ import spray.json.{JsString, JsArray, JsObject, JsValue}
 
 case class Person(uri: URI, name: String, age: Int, birthPlace: String)
 
-object Person extends {
+object Person {
 
+  /**
+   * Providing a dumbed down JSON converter for Persons.
+   * Ideally spray-json could have been used but this proved to be a bit quicker.
+   * @param json
+   * @return
+   */
   def apply(json: JsObject): Person = {
 
     def value(o: JsValue) = o.asJsObject.getFields("value") match {
@@ -15,9 +21,15 @@ object Person extends {
     }
 
     json.getFields("results").head.asJsObject.getFields("bindings").head match {
-      case JsArray(Seq(a))  => a.asJsObject.getFields("uri","name","age","birthPlace") match {
+      case JsArray(Seq(a))  =>
+        a.asJsObject.getFields("uri", "name", "age", "birthPlace") match {
         case Seq(uri,name,age,birthPlace) =>
-          Person(new URI(value(uri)),value(name),value(age).toInt,value(birthPlace))
+          Person(
+            new URI(value(uri)),
+            value(name),
+            value(age).toInt,
+            value(birthPlace)
+          )
       }
     }
   }
@@ -50,7 +62,6 @@ object Person extends {
          |      ?uri dbpedia-owl:birthDate ?dob.
          |      BIND(floor((now() - ?dob)/3600/24/364.25) as ?age)
          |   }
-         |
          |   OPTIONAL {
          |      ?uri dbpedia-owl:birthPlace ?pob.
          |      ?pob rdf:type dbpedia-owl:Settlement.
@@ -63,7 +74,6 @@ object Person extends {
          |      }
          |      BIND(IF(!bound(?countryLbl), str(?pobLbl), concat(str(?pobLbl),", ", str(?countryLbl))) as ?birthPlace)
          |   }
-         |
          |}
        """.stripMargin
   }

@@ -20,8 +20,9 @@ import spray.httpx.SprayJsonSupport._
 
 
 object DbpediaSparqlClient {
+  val encoding = "UTF-8"
   val responseFormat = enc("application/sparql-results+json")
-  private def enc(v: String) = URLEncoder.encode(v)
+  private def enc(v: String) = URLEncoder.encode(v, encoding)
 }
 
 class DbpediaSparqlClient(val hostUrl: String, val dbTimeoutInMillis: Long, val debug: Boolean) {
@@ -34,10 +35,12 @@ class DbpediaSparqlClient(val hostUrl: String, val dbTimeoutInMillis: Long, val 
   def response(sparql: String): Future[JsObject] = pipeline(Get(requestUri(sparql, dbTimeoutInMillis)))
 
   private val pipeline: HttpRequest => Future[JsObject] = {
-    sendReceive ~> overrideContentType(MediaTypes.`application/json`) ~> unmarshal[JsObject]
+    sendReceive ~>
+    overrideContentType(MediaTypes.`application/json`) ~>
+    unmarshal[JsObject]
   }
 
-  private def requestUri(query: String, timeout: Long = 30000): Uri = {
+  private def requestUri(query: String, timeout: Long): Uri = {
     Uri(s"$hostUrl?query=${enc(query)}&format=$responseFormat&timeout=$dbTimeoutInMillis${if (debug) "&debug=on" else ""}")
   }
 

@@ -23,18 +23,16 @@ object Question {
 
   def ask(q: String): String = {
 
-    // Tuple2 where _1 is the Sparql to run and _2 is the value extractor
+    // Tuple2 where _1 is the name of the person to run and _2 is the value extractor
     val tuple: (String, Person => String) = {
       q match {
-        case age(name) =>
-          (Person.sparql(name = Some(name)), ( (person: Person) => person.age.toString))
-        case pob(name) =>
-          (Person.sparql(name = Some(name)), ( (person: Person) => person.birthPlace))
+        case age(name) => (name, ( (person: Person) => person.age.toString))
+        case pob(name) => (name, ( (person: Person) => person.birthPlace))
       }
     }
 
     // execute the query (async)
-    val resultF: Future[JsObject] = sparqlClient.response(tuple._1)
+    val resultF: Future[JsObject] = sparqlClient.response(Person.sparql(name = Some(tuple._1)))
     // block for the result of the future to arrive
     val json = Await.result(resultF, timeout.duration).asInstanceOf[JsObject]
     // map and return the result
