@@ -1,4 +1,4 @@
-name := "Dbpedia"
+name := "dbpedia-sparql"
 
 organization  := "com.briskware"
 
