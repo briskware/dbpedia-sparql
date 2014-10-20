@@ -12,13 +12,11 @@ querying the age and the birth place of a foaf:Person.
 ```
 % git clone https://github.com/briskware/dbpedia-sparql.git
 ```
-
-3. Change to the cloned directory
+2. Change to the cloned directory
 ```
 % cd dbpedia-sparql
 ```
-
-2. Perform a clean build and run the tests
+3. Perform a clean build and run the tests
 ```
 % sbt clean test
 ```
