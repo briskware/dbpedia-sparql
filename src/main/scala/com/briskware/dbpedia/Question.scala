@@ -3,8 +3,10 @@ package com.briskware.dbpedia
 import spray.json.JsObject
 
 import scala.concurrent.Future
+import scala.io.StdIn
+import scala.util.Try
 
-object Question {
+object Question extends App {
 
   import scala.concurrent.Await
   import akka.util.Timeout
@@ -35,6 +37,22 @@ object Question {
     val json = Await.result(resultF, timeout.duration).asInstanceOf[JsObject]
     // map and return the result
     tuple._2(Person(json))
+  }
+
+  def askPolitely(q: String): Try[String] = {
+    Try(ask(q))
+  }
+
+  var exit = false
+  while (!exit) {
+    val ln = StdIn.readLine(">>>")
+    ln match {
+      case "exit" =>
+        DbpediaSparqlClient.system.shutdown()
+        exit = true
+      case "" =>
+      case x: String => println(askPolitely(x))
+    }
   }
 
 }

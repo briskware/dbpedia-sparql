@@ -74,7 +74,7 @@ object Person {
          |      }
          |      BIND(IF(!bound(?countryLbl), str(?pobLbl), concat(str(?pobLbl),", ", str(?countryLbl))) as ?birthPlace)
          |   }
-         |}
+         |} LIMIT 1
        """.stripMargin
   }
 }
