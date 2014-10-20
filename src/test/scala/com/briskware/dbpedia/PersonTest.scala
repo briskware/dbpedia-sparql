@@ -32,7 +32,7 @@ class PersonSuite extends FunSuite {
     whenReady(responseF) {
       result =>
         val p = Person(result)
-        assert(p.birthPlace === "London, United Kingdom")
+        assert(p.age === 48)
     }
   }
 

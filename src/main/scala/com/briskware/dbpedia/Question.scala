@@ -3,8 +3,10 @@ package com.briskware.dbpedia
 import spray.json.JsObject
 
 import scala.concurrent.Future
+import scala.io.StdIn
+import scala.util.Try
 
-object Question {
+object Question extends App {
 
   import scala.concurrent.Await
   import akka.util.Timeout
@@ -18,6 +20,8 @@ object Question {
 
   val age = """^How old is (.*)\?""".r
   val pob = """^What is the birth place of (.*)\?""".r
+  val about = """^about:\s*(.*)""".r
+  val empty = """^\s*$""".r
 
   def ask(q: String): String = {
 
@@ -26,6 +30,8 @@ object Question {
       q match {
         case age(name) => (name, ( (person: Person) => person.age.toString))
         case pob(name) => (name, ( (person: Person) => person.birthPlace))
+        case about(name) => (name, ( (person: Person) => person.toString))
+        case _ => throw new IllegalArgumentException(s"bad command: '$q'")
       }
     }
 
@@ -35,6 +41,22 @@ object Question {
     val json = Await.result(resultF, timeout.duration).asInstanceOf[JsObject]
     // map and return the result
     tuple._2(Person(json))
+  }
+
+  def askPolitely(q: String): Try[String] = {
+    Try(ask(q))
+  }
+
+  var exit = false
+  while (!exit) {
+    val ln = StdIn.readLine(">>> ")
+    ln match {
+      case "exit" =>
+        DbpediaSparqlClient.system.shutdown()
+        exit = true
+      case empty() =>
+      case x: String => println(askPolitely(x))
+    }
   }
 
 }
