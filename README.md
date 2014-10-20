@@ -8,11 +8,17 @@ querying the age and the birth place of a foaf:Person.
 
 # Instructions
 Check out the project
-```% git clone https://github.com/briskware/dbpedia-sparql.git```
+```
+% git clone https://github.com/briskware/dbpedia-sparql.git
+```
 Change to the cloned directory
-```% cd dbpedia-sparql```
+```
+% cd dbpedia-sparql
+```
 Perform a clean build and run the tests
-```% sbt clean test```
+```
+% sbt clean test
+```
 
 # Running the REPL
 A run-evaluate-print-loop (REPL) is provided for playing around.
