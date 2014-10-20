@@ -7,12 +7,7 @@ import scala.concurrent.duration._
 
 import akka.actor.ActorSystem
 import akka.util.Timeout
-import akka.pattern.ask
-import akka.io.IO
-
-import spray.can.Http
 import spray.http._
-import spray.http.HttpMethods._
 import spray.client.pipelining._
 import spray.json._
 import spray.json.DefaultJsonProtocol._
@@ -23,12 +18,13 @@ object DbpediaSparqlClient {
   val encoding = "UTF-8"
   val responseFormat = enc("application/sparql-results+json")
   private def enc(v: String) = URLEncoder.encode(v, encoding)
+
+  implicit val system: ActorSystem = ActorSystem()
 }
 
 class DbpediaSparqlClient(val hostUrl: String, val dbTimeoutInMillis: Long, val debug: Boolean) {
   import DbpediaSparqlClient._
 
-  implicit val system: ActorSystem = ActorSystem()
   implicit val timeout: Timeout = Timeout(dbTimeoutInMillis milliseconds)
   import system.dispatcher
 
