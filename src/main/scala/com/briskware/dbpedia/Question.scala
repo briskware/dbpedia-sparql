@@ -3,7 +3,6 @@ package com.briskware.dbpedia
 import spray.json.JsObject
 
 import scala.concurrent.Future
-import scala.util.{Try, Failure, Success}
 
 object Question {
 
@@ -16,7 +15,6 @@ object Question {
   val hostUrl = "http://dbpedia.org/sparql"
 
   val sparqlClient = new DbpediaSparqlClient(hostUrl = hostUrl, dbTimeoutInMillis = 3000L, debug = true)
-  import sparqlClient.system.dispatcher
 
   val age = """^How old is (.*)\?""".r
   val pob = """^What is the birth place of (.*)\?""".r

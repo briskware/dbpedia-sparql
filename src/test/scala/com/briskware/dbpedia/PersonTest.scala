@@ -4,16 +4,14 @@ package com.briskware.dbpedia
 import org.scalatest.FunSuite
 import org.scalatest.concurrent._
 import ScalaFutures._
-import org.scalatest.time.{Seconds, Span}
 import org.scalatest.time.SpanSugar._
 import spray.json.JsObject
 
 import scala.concurrent.Future
-import scala.util.{Success, Failure}
 
 class PersonSuite extends FunSuite {
 
-  import Question.sparqlClient.system.dispatcher
+  import DbpediaSparqlClient.system.dispatcher
 
   test("How old is Tony Blair") {
     val answer = Question.ask("How old is Tony Blair?")
@@ -27,7 +25,6 @@ class PersonSuite extends FunSuite {
 
 
   test("Run Sparql request for Cameron") {
-
     val responseF: Future[JsObject] = Question.sparqlClient.response(
       Person.sparql(uri = Some(new java.net.URI("http://dbpedia.org/resource/David_Cameron"))))
 
@@ -37,11 +34,9 @@ class PersonSuite extends FunSuite {
         val p = Person(result)
         assert(p.birthPlace === "London, United Kingdom")
     }
-
   }
 
   test("Run Sparql request for Blair") {
-
     val responseF: Future[JsObject] = Question.sparqlClient.response(
       Person.sparql(uri = Some(new java.net.URI("http://dbpedia.org/resource/Tony_Blair"))))
 
@@ -51,7 +46,6 @@ class PersonSuite extends FunSuite {
         val p = Person(result)
         assert(p.birthPlace === "Edinburgh")
     }
-
   }
 
 }
