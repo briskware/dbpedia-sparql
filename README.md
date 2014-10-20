@@ -4,15 +4,21 @@ dbpedia-sparql
 Sparql Client and Playground for the http://dbpedia.org/sparql endpoint
 
 Uses Spray and Futures with the Akka Dispatcher to send queries to the Dbpedia Sparql endpoint,
-querying the age and the birht place of a foaf:Person.
+querying the age and the birth place of a foaf:Person.
 
-Instructions:
+# Instructions
 
-1) Check out the project
-
+1. Check out the project
+```
 % git clone https://github.com/briskware/dbpedia-sparql.git
+```
 
-2) Build and run the tests
+3. Change to the cloned directory
+```
+% cd dbpedia-sparql
+```
 
-% sbt test
-
+2. Perform a clean build and run the tests
+```
+% sbt clean test
+```
