@@ -20,6 +20,8 @@ object Question extends App {
 
   val age = """^How old is (.*)\?""".r
   val pob = """^What is the birth place of (.*)\?""".r
+  val about = """^about:\s*(.*)""".r
+  val empty = """^\s*$""".r
 
   def ask(q: String): String = {
 
@@ -28,6 +30,8 @@ object Question extends App {
       q match {
         case age(name) => (name, ( (person: Person) => person.age.toString))
         case pob(name) => (name, ( (person: Person) => person.birthPlace))
+        case about(name) => (name, ( (person: Person) => person.toString))
+        case _ => throw new IllegalArgumentException(s"bad command: '$q'")
       }
     }
 
@@ -45,12 +49,12 @@ object Question extends App {
 
   var exit = false
   while (!exit) {
-    val ln = StdIn.readLine(">>>")
+    val ln = StdIn.readLine(">>> ")
     ln match {
       case "exit" =>
         DbpediaSparqlClient.system.shutdown()
         exit = true
-      case "" =>
+      case empty() =>
       case x: String => println(askPolitely(x))
     }
   }

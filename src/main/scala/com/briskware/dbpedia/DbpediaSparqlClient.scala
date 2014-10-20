@@ -2,8 +2,7 @@ package com.briskware.dbpedia
 
 import java.net.URLEncoder
 
-import com.sun.xml.internal.ws.resources.PolicyMessages
-import com.typesafe.config.{ConfigFactory, Config}
+import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.Future
 import scala.concurrent.duration._

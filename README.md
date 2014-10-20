@@ -13,3 +13,16 @@ querying the age and the birth place of a foaf:Person.
   - ```% cd dbpedia-sparql```
 3. Perform a clean build and run the tests
   - ```% sbt clean test```
+
+# Running the REPL
+A run-evaluate-print-loop (REPL) is provided for playing around.
+```
+% sbt run
+>>> What is the birth place of David Cameron?
+Success(London, United Kingdom)
+>>> How old is Tony Blair?
+Success(61)
+>>> about: Patrick Stewart
+Success(Person(http://dbpedia.org/resource/Patrick_Stewart,Patrick Stewart,74,Mirfield, United Kingdom))
+>>> exit
+```
