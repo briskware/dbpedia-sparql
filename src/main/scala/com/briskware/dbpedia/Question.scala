@@ -29,6 +29,7 @@ object Question {
         case age(name) => (name, ( (person: Person) => person.age.toString))
         case pob(name) => (name, ( (person: Person) => person.birthPlace))
         case about(name) => (name, ( (person: Person) => person.toString))
+        case _ => throw new IllegalArgumentException(s"bad command: '$q'")
       }
     }
 

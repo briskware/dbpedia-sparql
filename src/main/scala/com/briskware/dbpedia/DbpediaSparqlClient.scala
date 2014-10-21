@@ -2,6 +2,8 @@ package com.briskware.dbpedia
 
 import java.net.URLEncoder
 
+import com.typesafe.config.ConfigFactory
+
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
@@ -19,7 +21,9 @@ object DbpediaSparqlClient {
   val responseFormat = enc("application/sparql-results+json")
   private def enc(v: String) = URLEncoder.encode(v, encoding)
 
-  implicit val system: ActorSystem = ActorSystem()
+  private val config = ConfigFactory.parseString("akka.loglevel=WARNING").withFallback(ConfigFactory.load)
+
+  implicit val system: ActorSystem = ActorSystem("dbpedia-sparql", config)
 }
 
 class DbpediaSparqlClient(val hostUrl: String, val dbTimeoutInMillis: Long, val debug: Boolean) {
