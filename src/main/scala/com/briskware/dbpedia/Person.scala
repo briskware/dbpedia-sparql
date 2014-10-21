@@ -6,7 +6,7 @@ import spray.json.{JsString, JsArray, JsObject, JsValue}
 
 case class Person(uri: URI, name: String, age: Int, birthPlace: String)
 
-object Person {
+object Person  {
 
   /**
    * Providing a dumbed down JSON converter for Persons.
@@ -29,6 +29,13 @@ object Person {
             value(name),
             value(age).toInt,
             value(birthPlace)
+          )
+        case Seq(uri,name,age) =>
+          Person(
+            new URI(value(uri)),
+            value(name),
+            value(age).toInt,
+            "unknown"
           )
       }
     }
